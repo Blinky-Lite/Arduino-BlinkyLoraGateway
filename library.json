@@ -1,0 +1,17 @@
+{
+    "name": "BlinkyLoraGateway",
+    "keywords": "mqtt, iot, pico",
+    "description": "",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/knolleary/pubsubclient.git"
+    },
+    "version": "1.0",
+    "examples": "examples/*/*.ino",
+    "frameworks": "arduino",
+    "platforms": [
+        "atmelavr",
+        "espressif8266",
+        "espressif32"
+    ]
+}
