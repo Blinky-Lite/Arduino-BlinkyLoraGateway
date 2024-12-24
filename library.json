@@ -4,7 +4,7 @@
     "description": "",
     "repository": {
         "type": "git",
-        "url": "https://github.com/knolleary/pubsubclient.git"
+        "url": "https://github.com/Blinky-Lite/Arduino-BlinkyLoraGateway"
     },
     "version": "1.0",
     "examples": "examples/*/*.ino",
