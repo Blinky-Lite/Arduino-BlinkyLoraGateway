@@ -1,10 +1,11 @@
+#define SIZE_OF_NODE_DATA 8 // Need to change this to match LoRa Node data struct size
+#define GATEWAYADDRESS 10   // Need to change this
+
 #define BLINKY_DIAG         0
 #define LORA_DIAG         false
 #define COMM_LED_PIN       12
 #define RST_BUTTON_PIN     -1
 
-#define SIZE_OF_NODE_DATA 16
-#define GATEWAYADDRESS 10
 #define CHSPIN 17           // LoRa radio chip select
 #define RSTPIN 14           // LoRa radio reset
 #define IRQPIN 15           // LoRa radio IRQ
