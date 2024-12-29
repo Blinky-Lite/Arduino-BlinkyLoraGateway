@@ -12,7 +12,7 @@ Full API documentation is available at [blinky-lite.org](https://blinky-lite.org
 
 ## Limitations
 
-Works only [Arduino-Pico](https://arduino-pico.readthedocs.io/en/latest/). Need to have Arduino LoRa library by sandeepmistry installed.
+Works only [Arduino-Pico](https://arduino-pico.readthedocs.io/en/latest/). Need to have [Arduino LoRa](https://github.com/sandeepmistry/arduino-LoRa) library by sandeepmistry installed.
 
 ## License
 
