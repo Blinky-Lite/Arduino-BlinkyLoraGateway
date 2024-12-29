@@ -47,7 +47,7 @@ void BlinkyLoraGatewayClass::begin(size_t nodeDataSize, boolean chattyCathy, int
   LoRa.onTxDone(BlinkyLoraGatewayClass::onLoraTxDone);
   LoRa.onCadDone(BlinkyLoraGatewayClass::onCadDone);
   BlinkyLoraGatewayClass::rxMode();
-
+  randomSeed(analogRead(A0));
   return;
 }
 void BlinkyLoraGatewayClass::rxMode()
@@ -203,7 +203,7 @@ void BlinkyLoraGatewayClass::onCadDone(bool signalDetected)
 {
   if (signalDetected)
   {
-    delay(10);
+    delay(random(500, 1500));
     BlinkyLoraGateway.beginSendingLoraData();
     return;
   }
