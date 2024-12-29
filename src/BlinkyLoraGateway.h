@@ -41,7 +41,9 @@ class BlinkyLoraGatewayClass
     static void     onLoRaReceive(int packetSize);
     static void     rxMode();
     static void     txMode();
-    void            sendMessage();
+    static void     onCadDone(bool signalDetected);
+    void            beginSendingLoraData();
+    void            finishSendingLoraData();
         
 };
 extern BlinkyLoraGatewayClass BlinkyLoraGateway;

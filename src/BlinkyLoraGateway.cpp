@@ -45,6 +45,7 @@ void BlinkyLoraGatewayClass::begin(size_t nodeDataSize, boolean chattyCathy, int
   }
   LoRa.onReceive(BlinkyLoraGatewayClass::onLoRaReceive);
   LoRa.onTxDone(BlinkyLoraGatewayClass::onLoraTxDone);
+  LoRa.onCadDone(BlinkyLoraGatewayClass::onCadDone);
   BlinkyLoraGatewayClass::rxMode();
 
   return;
@@ -85,31 +86,34 @@ boolean BlinkyLoraGatewayClass::publishGatewayData(uint8_t* pgatewayData)
   memPtr = _pgatewayDataSend;
   *memPtr = _crc.calc();
   _gatewayHasDataToRead = true;
-  sendMessage();
+  beginSendingLoraData();
   return true;
 }
-void BlinkyLoraGatewayClass::sendMessage() 
+void BlinkyLoraGatewayClass::beginSendingLoraData() 
 {
   if (!_gatewayHasDataToRead) return;
   BlinkyLoraGatewayClass::txMode();                      // set tx mode
   LoRa.beginPacket();                                 // start packet
+  LoRa.channelActivityDetection();
+}
+void BlinkyLoraGatewayClass::finishSendingLoraData()
+{
   LoRa.write(_pgatewayDataSend, _sizeOfTransferData);    // add payload
   LoRa.endPacket(true);                               // finish packet and send it
-  _gatewayHasDataToRead = false;
+ _gatewayHasDataToRead = false;
 }
 void BlinkyLoraGatewayClass::receiveData(int packetSize)
 {
   if (_nodeHasDataToRead) return;;
   uint8_t numBytes = 0;
+  uint8_t garbageByte = 0;
   
   if (_chattyCathy) Serial.print("Received LoRa data at: ");
   if (_chattyCathy) Serial.println(millis());
-  while (LoRa.available() )
-  {
-    numBytes = LoRa.readBytes(_pnodeDataRecv, _sizeOfTransferData);
-  }
+  numBytes = LoRa.available();
   if (numBytes != _sizeOfTransferData)
   {
+    for (int ii = 0; ii < numBytes; ++ii) garbageByte = (uint8_t) LoRa.read();
     if (_chattyCathy)
     {
       Serial.print("LoRa bytes do not match. Bytes Received: ");
@@ -119,6 +123,7 @@ void BlinkyLoraGatewayClass::receiveData(int packetSize)
     }
     return;
   }
+  LoRa.readBytes(_pnodeDataRecv, _sizeOfTransferData);
   
   _crc.restart();
   uint8_t* memPtr = _pnodeDataRecv;
@@ -193,6 +198,16 @@ void BlinkyLoraGatewayClass::onLoraTxDone()
 {
   if (BlinkyLoraGateway._chattyCathy) Serial.println("TxDone");
   BlinkyLoraGatewayClass::rxMode();
+}
+void BlinkyLoraGatewayClass::onCadDone(bool signalDetected) 
+{
+  if (signalDetected)
+  {
+    delay(10);
+    BlinkyLoraGateway.beginSendingLoraData();
+    return;
+  }
+  BlinkyLoraGateway.finishSendingLoraData();
 }
 
 
